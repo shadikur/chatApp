@@ -66,8 +66,27 @@ const loginUser = async (req, res) => {
         const token = createToken(user._id);
         res.status(200).json({ _id: user.id, name: user.name, email, token })
     } catch (error) {
-
+        res.status(400).json("Something went wrong")
     }
 }
 
-module.exports = { registerUser, loginUser }
+const findUser = async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const user = await userModel.findById(userId)
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+const getUser = async (req, res) => {
+    try {
+        const user = await userModel.find()
+        res.status(200).json(user)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+module.exports = { registerUser, loginUser, findUser, getUser }
